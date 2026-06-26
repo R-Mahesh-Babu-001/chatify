@@ -2,19 +2,21 @@ import { useEffect, useState } from "react";
 import { useChatStore } from "../store/useChatStore";
 import UsersLoadingSkeleton from "./UsersLoadingSkeleton";
 import { useAuthStore } from "../store/useAuthStore";
-import { SearchIcon } from "lucide-react";
+import { ShieldCheck, Trash2, SearchIcon } from "lucide-react";
 
 function ContactList() {
   const {
     getAllContacts,
     allContacts,
     setSelectedUser,
+    deleteUserAccount,
     isUsersLoading,
     subscribeToContacts,
     unsubscribeFromContacts,
   } = useChatStore();
   const { onlineUsers, authUser } = useAuthStore();
   const [search, setSearch] = useState("");
+  const isAdmin = authUser?.role === "admin";
 
   useEffect(() => {
     getAllContacts();
@@ -34,8 +36,6 @@ function ContactList() {
   });
 
   const sortedContacts = [...filteredContacts].sort((a, b) => {
-    if (a._id === authUser?._id) return -1;
-    if (b._id === authUser?._id) return 1;
     return a.fullName.localeCompare(b.fullName);
   });
 
@@ -73,8 +73,11 @@ function ContactList() {
             <div className="flex-1 min-w-0">
               <h4 className="text-[#f2f2f2] font-normal text-base truncate">
                 {contact.fullName}
-                {contact._id === authUser?._id && (
-                  <span className="ml-2 text-xs text-[#e50914]">You</span>
+                {isAdmin && (
+                  <span className="ml-2 inline-flex items-center gap-1 text-xs text-[#e50914]">
+                    <ShieldCheck className="w-3 h-3" />
+                    User
+                  </span>
                 )}
               </h4>
               <p className="text-[#9b9b9b] text-sm truncate">
@@ -84,6 +87,22 @@ function ContactList() {
             <div className="flex flex-col items-end gap-1">
               {onlineUsers.includes(contact._id) && (
                 <span className="w-2 h-2 rounded-full bg-[#e50914]" />
+              )}
+              {isAdmin && contact.role !== "admin" && (
+                <button
+                  type="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    if (window.confirm(`Remove ${contact.fullName}'s account?`)) {
+                      deleteUserAccount(contact._id);
+                    }
+                  }}
+                  className="w-8 h-8 rounded-lg text-[#999] hover:text-red-400 hover:bg-red-950/30 flex items-center justify-center"
+                  aria-label={`Delete ${contact.fullName}`}
+                  title={`Delete ${contact.fullName}`}
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
               )}
             </div>
           </div>

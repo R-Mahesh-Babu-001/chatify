@@ -26,6 +26,11 @@ const userSchema = new mongoose.Schema(
       default: "Set your status",
       maxlength: 80,
     },
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
+    },
     otpHash: {
       type: String,
       default: null,

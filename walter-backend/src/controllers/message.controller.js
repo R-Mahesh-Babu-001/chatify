@@ -23,7 +23,11 @@ const scheduleSeenMessagesDeletion = (messageIds) => {
 
 export const getAllContacts = async (req, res) => {
   try {
-    const users = await User.find().select("-password -otpHash -otpExpiresAt");
+    const filter =
+      req.user.role === "admin"
+        ? { _id: { $ne: req.user._id } }
+        : { role: { $ne: "admin" } };
+    const users = await User.find(filter).select("-password -otpHash -otpExpiresAt");
 
     res.status(200).json(users);
   } catch (error) {
@@ -36,6 +40,11 @@ export const getMessagesByUserId = async (req, res) => {
   try {
     const myId = req.user._id;
     const { id: userToChatId } = req.params;
+    const chatUser = await User.findById(userToChatId).select("role");
+
+    if (!chatUser || (chatUser.role === "admin" && req.user.role !== "admin")) {
+      return res.status(404).json({ message: "Conversation not found" });
+    }
 
     const messages = await Message.find({
       $or: [
@@ -121,9 +130,12 @@ export const sendMessage = async (req, res) => {
       if (senderId.equals(receiverId)) {
         return res.status(400).json({ message: "Cannot send messages to yourself." });
       }
-      const receiverExists = await User.exists({ _id: receiverId });
+      const receiverExists = await User.findById(receiverId).select("role");
       if (!receiverExists) {
         return res.status(404).json({ message: "Receiver not found." });
+      }
+      if (receiverExists.role === "admin" && req.user.role !== "admin") {
+        return res.status(403).json({ message: "Cannot message this account." });
       }
 
       newMessage = new Message({
@@ -248,7 +260,12 @@ export const getChatPartners = async (req, res) => {
       ),
     ];
 
-    const chatPartners = await User.find({ _id: { $in: chatPartnerIds } }).select(
+    const userFilter =
+      req.user.role === "admin"
+        ? { _id: { $in: chatPartnerIds } }
+        : { _id: { $in: chatPartnerIds }, role: { $ne: "admin" } };
+
+    const chatPartners = await User.find(userFilter).select(
       "-password -otpHash -otpExpiresAt"
     );
 

@@ -5,6 +5,7 @@ import { useAuthStore } from "./useAuthStore";
 import { useWebsiteStore } from "./useWebsiteStore";
 import {
   deleteLocalMessage,
+  deleteLocalConversation,
   getLocalConversations,
   getLocalMessages,
   mergeConversations,
@@ -110,6 +111,33 @@ export const useChatStore = create((set, get) => ({
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to create group");
       throw error;
+    }
+  },
+
+  deleteUserAccount: async (userId) => {
+    try {
+      await axiosInstance.delete(`/admin/users/${userId}`);
+      const ownerId = useAuthStore.getState().authUser?._id;
+      await deleteLocalConversation({
+        ownerId,
+        conversationId: userId,
+        conversationType: "direct",
+      });
+      set((state) => ({
+        allContacts: state.allContacts.filter((contact) => contact._id !== userId),
+        chats: state.chats.filter((chat) => chat._id !== userId),
+        messages:
+          state.selectedUser?._id === userId
+            ? []
+            : state.messages,
+        selectedUser:
+          state.selectedUser?._id === userId
+            ? null
+            : state.selectedUser,
+      }));
+      toast.success("User account removed");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to remove user account");
     }
   },
 

@@ -59,6 +59,7 @@ export const signup = async (req, res) => {
         email: newUser.email,
         profilePic: newUser.profilePic,
         status: newUser.status,
+        role: newUser.role,
       });
 
       try {
@@ -98,6 +99,7 @@ export const login = async (req, res) => {
       email: user.email,
       profilePic: user.profilePic,
       status: user.status,
+      role: user.role,
     });
   } catch (error) {
     console.error("Error in login controller:", error);

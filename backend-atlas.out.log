@@ -1,0 +1,9 @@
+
+> backend@1.0.0 start
+> node src/server.js
+
+Using Mock Cloudinary Implementation
+Server running on port: 5001
+MONGODB CONNECTED: ac-viqquzn-shard-00-00.hfgoo8n.mongodb.net
+Socket connection rejected: User not found
+Socket connection rejected: User not found

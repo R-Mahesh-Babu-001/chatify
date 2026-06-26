@@ -199,3 +199,44 @@ export const deleteLocalMessage = async ({ ownerId, messageId }) => {
 
   database.close();
 };
+
+export const deleteLocalConversation = async ({
+  ownerId,
+  conversationId,
+  conversationType = "direct",
+}) => {
+  if (
+    !ownerId ||
+    !conversationId ||
+    !conversationType ||
+    typeof window === "undefined" ||
+    !window.indexedDB
+  ) return;
+
+  const database = await openDatabase();
+  const ownerConversation = getOwnerConversationKey({
+    ownerId,
+    conversationId,
+    conversationType,
+  });
+
+  await new Promise((resolve, reject) => {
+    const transaction = database.transaction(
+      [MESSAGE_STORE, CONVERSATION_STORE],
+      "readwrite"
+    );
+    const messageStore = transaction.objectStore(MESSAGE_STORE);
+    const conversationStore = transaction.objectStore(CONVERSATION_STORE);
+    const request = messageStore.index("ownerConversation").getAllKeys(ownerConversation);
+
+    request.onsuccess = () => {
+      request.result.forEach((key) => messageStore.delete(key));
+      conversationStore.delete(ownerConversation);
+    };
+    request.onerror = () => reject(request.error);
+    transaction.oncomplete = resolve;
+    transaction.onerror = () => reject(transaction.error);
+  });
+
+  database.close();
+};

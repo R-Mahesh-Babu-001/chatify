@@ -156,7 +156,6 @@ function SettingsPanel() {
           </div>
         </div>
 
-
       </div>
     </div>
   );

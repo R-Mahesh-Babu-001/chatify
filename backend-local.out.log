@@ -1,0 +1,11 @@
+
+> backend@1.0.0 start
+> node src/server.js
+
+Using Mock Cloudinary Implementation
+Server running on port: 5001
+MONGODB CONNECTED: 127.0.0.1
+Socket authenticated for user: mahesh (69e71d6cbfd9c557bd05d19d)
+A user connected mahesh
+Socket authenticated for user: mahesh (69e71d6cbfd9c557bd05d19d)
+A user connected mahesh

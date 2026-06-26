@@ -33,12 +33,17 @@ io.on("connection", async (socket) => {
   const userId = socket.userId;
   userSocketMap[userId] = socket.id;
 
-  io.emit("contactAdded", {
+  const contactPayload = {
     _id: socket.user._id.toString(),
     fullName: socket.user.fullName,
     profilePic: socket.user.profilePic,
     status: socket.user.status,
-  });
+    role: socket.user.role,
+  };
+
+  if (socket.user.role !== "admin") {
+    io.emit("contactAdded", contactPayload);
+  }
 
   // Auto-join group rooms
   try {

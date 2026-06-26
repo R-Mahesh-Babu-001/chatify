@@ -56,6 +56,12 @@ npm install
 npm run dev
 ```
 
+---
+
+## Deploy on Render with MongoDB Atlas
+
+Follow `DEPLOY_RENDER_ATLAS.md` for the Render free hosting and MongoDB Atlas setup.
+
 ## 💻 Run the Frontend
 
 ```bash

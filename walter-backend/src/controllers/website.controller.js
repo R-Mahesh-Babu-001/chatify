@@ -1,4 +1,5 @@
 import Website from "../models/Website.js";
+import User from "../models/User.js";
 
 const isTrulyPdfHostname = (hostname) =>
   hostname.toLowerCase().replace(/^www\./, "") === "truly-pdf.onrender.com";
@@ -16,7 +17,21 @@ const normalizeWebsiteUrl = (value) => {
 
 export const getWebsites = async (req, res) => {
   try {
-    const websites = await Website.find({ userId: req.user._id }).sort({ createdAt: 1 });
+    res.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+    const adminUsers = await User.find({ role: "admin" }).select("_id");
+    const adminUserIds = adminUsers.map((user) => user._id);
+    const filter =
+      req.user.role === "admin"
+        ? {}
+        : {
+            $or: [
+              { userId: req.user._id },
+              { userId: { $in: adminUserIds } },
+            ],
+          };
+    const websites = await Website.find(filter)
+      .populate("userId", "fullName email role")
+      .sort({ createdAt: 1 });
     res.status(200).json(websites);
   } catch (error) {
     console.error("Error loading websites:", error);
@@ -26,6 +41,7 @@ export const getWebsites = async (req, res) => {
 
 export const createWebsite = async (req, res) => {
   try {
+    res.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
     const name = req.body.name?.trim();
     const rawUrl = req.body.url?.trim();
     const requestedViewMode = req.body.viewMode;
@@ -51,6 +67,7 @@ export const createWebsite = async (req, res) => {
       url,
       viewMode,
     });
+    await website.populate("userId", "fullName email role");
 
     res.status(201).json(website);
   } catch (error) {
@@ -65,10 +82,12 @@ export const createWebsite = async (req, res) => {
 
 export const deleteWebsite = async (req, res) => {
   try {
-    const website = await Website.findOneAndDelete({
-      _id: req.params.id,
-      userId: req.user._id,
-    });
+    res.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+    const filter =
+      req.user.role === "admin"
+        ? { _id: req.params.id }
+        : { _id: req.params.id, userId: req.user._id };
+    const website = await Website.findOneAndDelete(filter);
 
     if (!website) {
       return res.status(404).json({ message: "Website not found" });
@@ -83,15 +102,17 @@ export const deleteWebsite = async (req, res) => {
 
 export const updateWebsiteViewMode = async (req, res) => {
   try {
+    res.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
     const { viewMode } = req.body;
     if (!["assistant", "website"].includes(viewMode)) {
       return res.status(400).json({ message: "Invalid website view mode" });
     }
 
-    const website = await Website.findOne({
-      _id: req.params.id,
-      userId: req.user._id,
-    });
+    const filter =
+      req.user.role === "admin"
+        ? { _id: req.params.id }
+        : { _id: req.params.id, userId: req.user._id };
+    const website = await Website.findOne(filter);
 
     if (!website) {
       return res.status(404).json({ message: "Website not found" });
@@ -106,6 +127,7 @@ export const updateWebsiteViewMode = async (req, res) => {
 
     website.viewMode = viewMode;
     await website.save();
+    await website.populate("userId", "fullName email role");
 
     res.status(200).json(website);
   } catch (error) {

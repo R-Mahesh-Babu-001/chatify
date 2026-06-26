@@ -1,0 +1,116 @@
+
+> backend@1.0.0 start
+> node src/server.js
+
+Using Mock Cloudinary Implementation
+Server running on port: 5001
+MONGODB CONNECTED: ac-viqquzn-shard-00-00.hfgoo8n.mongodb.net
+Socket authenticated for user: Admin (6a3eb58cd3aab4dc4c35f7fe)
+A user connected Admin
+A user disconnected Admin
+Skipping welcome email: Resend is not configured
+Socket authenticated for user: demo (6a3eb7ef60d40d687c77248e)
+A user connected demo
+A user disconnected demo
+Socket authenticated for user: Admin (6a3eb58cd3aab4dc4c35f7fe)
+A user connected Admin
+A user disconnected Admin
+Socket authenticated for user: Admin (6a3eb58cd3aab4dc4c35f7fe)
+A user connected Admin
+Socket authenticated for user: Admin (6a3eb58cd3aab4dc4c35f7fe)
+A user connected Admin
+A user disconnected Admin
+A user disconnected Admin
+Socket authenticated for user: Admin (6a3eb58cd3aab4dc4c35f7fe)
+A user connected Admin
+Socket authenticated for user: Admin (6a3eb58cd3aab4dc4c35f7fe)
+A user connected Admin
+A user disconnected Admin
+Socket authenticated for user: Admin (6a3eb58cd3aab4dc4c35f7fe)
+A user connected Admin
+Skipping welcome email: Resend is not configured
+Socket authenticated for user: demo (6a3eba2860d40d687c772520)
+A user connected demo
+A user disconnected demo
+Socket authenticated for user: demo (6a3eba2860d40d687c772520)
+A user connected demo
+Socket authenticated for user: demo (6a3eba2860d40d687c772520)
+A user connected demo
+A user disconnected demo
+A user disconnected demo
+Socket authenticated for user: demo (6a3eba2860d40d687c772520)
+A user connected demo
+Socket authenticated for user: demo (6a3eba2860d40d687c772520)
+A user connected demo
+A user disconnected demo
+A user disconnected demo
+Socket authenticated for user: demo (6a3eba2860d40d687c772520)
+A user connected demo
+Socket authenticated for user: demo (6a3eba2860d40d687c772520)
+A user connected demo
+A user disconnected demo
+A user disconnected demo
+Socket authenticated for user: demo (6a3eba2860d40d687c772520)
+A user connected demo
+Socket authenticated for user: demo (6a3eba2860d40d687c772520)
+A user connected demo
+A user disconnected demo
+A user disconnected demo
+Socket authenticated for user: demo (6a3eba2860d40d687c772520)
+A user connected demo
+Socket authenticated for user: demo (6a3eba2860d40d687c772520)
+A user connected demo
+A user disconnected demo
+A user disconnected demo
+Socket authenticated for user: demo (6a3eba2860d40d687c772520)
+A user connected demo
+Socket authenticated for user: demo (6a3eba2860d40d687c772520)
+A user connected demo
+A user disconnected demo
+A user disconnected demo
+Skipping welcome email: Resend is not configured
+Socket authenticated for user: demo (6a3ebc9560d40d687c772604)
+A user connected demo
+A user disconnected demo
+Socket authenticated for user: demo (6a3ebc9560d40d687c772604)
+A user connected demo
+Socket authenticated for user: demo (6a3ebc9560d40d687c772604)
+A user connected demo
+Socket authenticated for user: Admin (6a3eb58cd3aab4dc4c35f7fe)
+A user connected Admin
+Socket authenticated for user: demo (6a3ebc9560d40d687c772604)
+A user connected demo
+Socket authenticated for user: demo (6a3ebc9560d40d687c772604)
+A user connected demo
+A user disconnected demo
+Socket authenticated for user: demo (6a3ebc9560d40d687c772604)
+A user connected demo
+Socket authenticated for user: demo (6a3ebc9560d40d687c772604)
+A user connected demo
+Socket authenticated for user: Admin (6a3eb58cd3aab4dc4c35f7fe)
+A user connected Admin
+Socket authenticated for user: demo (6a3ebc9560d40d687c772604)
+A user connected demo
+Socket authenticated for user: demo (6a3ebc9560d40d687c772604)
+A user connected demo
+Socket authenticated for user: demo (6a3ebc9560d40d687c772604)
+A user connected demo
+Socket authenticated for user: Admin (6a3eb58cd3aab4dc4c35f7fe)
+A user connected Admin
+A user disconnected demo
+Socket authenticated for user: demo (6a3ebc9560d40d687c772604)
+A user connected demo
+A user disconnected demo
+A user disconnected demo
+A user disconnected demo
+A user disconnected demo
+A user disconnected demo
+Skipping welcome email: Resend is not configured
+Socket authenticated for user: demo (6a3ebf3b60d40d687c772709)
+A user connected demo
+Socket authenticated for user: Admin (6a3eb58cd3aab4dc4c35f7fe)
+A user connected Admin
+A user disconnected Admin
+Skipping welcome email: Resend is not configured
+Socket authenticated for user: Normal User (6a3ebfc460d40d687c77272d)
+A user connected Normal User

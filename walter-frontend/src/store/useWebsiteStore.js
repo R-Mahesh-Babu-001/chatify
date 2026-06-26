@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import toast from "react-hot-toast";
 import { axiosInstance } from "../lib/axios";
+import { useAuthStore } from "./useAuthStore";
 
 export const useWebsiteStore = create((set, get) => ({
   websites: [],
@@ -8,14 +9,24 @@ export const useWebsiteStore = create((set, get) => ({
   isLoading: false,
   isSaving: false,
   hasLoaded: false,
+  loadedForUserId: null,
 
-  loadWebsites: async () => {
-    if (get().hasLoaded || get().isLoading) return;
+  loadWebsites: async (force = false) => {
+    const currentUserId = useAuthStore.getState().authUser?._id || null;
+
+    if (
+      get().isLoading ||
+      (!force && get().hasLoaded && get().loadedForUserId === currentUserId)
+    ) {
+      return;
+    }
 
     set({ isLoading: true });
     try {
-      const response = await axiosInstance.get("/websites");
-      set({ websites: response.data, hasLoaded: true });
+      const response = await axiosInstance.get("/websites", {
+        params: { _ts: Date.now() },
+      });
+      set({ websites: response.data, hasLoaded: true, loadedForUserId: currentUserId });
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to load saved websites");
     } finally {
@@ -78,4 +89,7 @@ export const useWebsiteStore = create((set, get) => ({
 
   openWebsite: (website) => set({ selectedWebsite: website }),
   closeWebsite: () => set({ selectedWebsite: null }),
+
+  resetWebsites: () =>
+    set({ websites: [], selectedWebsite: null, isLoading: false, hasLoaded: false, loadedForUserId: null }),
 }));

@@ -4,6 +4,7 @@ import { BadgeCheck, ExternalLink, Globe2, Loader2, Plus, Trash2, X } from "luci
 import toast from "react-hot-toast";
 import { useWebsiteStore } from "../store/useWebsiteStore";
 import { useChatStore } from "../store/useChatStore";
+import { useAuthStore } from "../store/useAuthStore";
 
 const TRULY_PDF_DISPLAY_NAME = "Truly-PDF";
 const TRULY_PDF_LOGO = "/truly-pdf-logo.svg";
@@ -21,6 +22,12 @@ const isTrulyPdfWebsite = (url) => {
 
 const getWebsiteDisplayName = (website) =>
   isTrulyPdfWebsite(website.url) ? TRULY_PDF_DISPLAY_NAME : website.name;
+
+const getWebsiteOwnerId = (website) =>
+  typeof website.userId === "object" ? website.userId?._id : website.userId;
+
+const isAdminOwnedWebsite = (website) =>
+  typeof website.userId === "object" && website.userId?.role === "admin";
 
 const WebsiteIcon = ({ website, className = "w-9 h-9 rounded-lg" }) => {
   const isTrulyPdf = isTrulyPdfWebsite(website.url);
@@ -69,6 +76,8 @@ function WebsiteBookmarks() {
     updateWebsiteViewMode,
     openWebsite,
   } = useWebsiteStore();
+  const { authUser } = useAuthStore();
+  const isAdmin = authUser?.role === "admin";
   const openInsideChatify = (website) => {
     useChatStore.getState().setSelectedUser(null);
     openWebsite(website);
@@ -85,8 +94,14 @@ function WebsiteBookmarks() {
   }
 
   useEffect(() => {
-    loadWebsites();
-  }, [loadWebsites]);
+    loadWebsites(true);
+  }, [authUser?._id, loadWebsites]);
+
+  useEffect(() => {
+    if (isOpen) {
+      loadWebsites(true);
+    }
+  }, [isOpen, loadWebsites]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -278,6 +293,10 @@ function WebsiteBookmarks() {
                     websites.map((website) => {
                       const isTrulyPdf = isTrulyPdfWebsite(website.url);
                       const displayName = getWebsiteDisplayName(website);
+                      const isOwner = getWebsiteOwnerId(website) === authUser?._id;
+                      const isSharedByAdmin = isAdminOwnedWebsite(website) && !isAdmin;
+                      const canManageWebsite = isAdmin || isOwner;
+                      const canDeleteWebsite = isAdmin || (isOwner && !isTrulyPdf);
 
                       return (
                         <div
@@ -291,34 +310,52 @@ function WebsiteBookmarks() {
                             {isTrulyPdf && <VerifiedBadge />}
                           </div>
                           <p className="text-xs text-[#777] truncate">{website.url}</p>
+                          {isAdmin && website.userId && (
+                            <p className="text-[10px] text-[#666] truncate mt-1">
+                              Owner: {website.userId.fullName || website.userId.email}
+                            </p>
+                          )}
+                          {isSharedByAdmin && (
+                            <p className="text-[10px] text-red-300/80 truncate mt-1">
+                              Shared by Admin
+                            </p>
+                          )}
                           {isTrulyPdf && (
                             <div className="flex items-center gap-1 mt-2">
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  updateWebsiteViewMode(website._id, "assistant")
-                                }
-                                className={`px-2 py-1 rounded-md text-[10px] border ${
-                                  website.viewMode === "assistant"
-                                    ? "border-red-600 bg-red-950/30 text-red-300"
-                                    : "border-[#2a2a2a] text-[#777] hover:text-white"
-                                }`}
-                              >
-                                Assistant
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  updateWebsiteViewMode(website._id, "website")
-                                }
-                                className={`px-2 py-1 rounded-md text-[10px] border ${
-                                  website.viewMode !== "assistant"
-                                    ? "border-red-600 bg-red-950/30 text-red-300"
-                                    : "border-[#2a2a2a] text-[#777] hover:text-white"
-                                }`}
-                              >
-                                Website
-                              </button>
+                              {canManageWebsite ? (
+                                <>
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      updateWebsiteViewMode(website._id, "assistant")
+                                    }
+                                    className={`px-2 py-1 rounded-md text-[10px] border ${
+                                      website.viewMode === "assistant"
+                                        ? "border-red-600 bg-red-950/30 text-red-300"
+                                        : "border-[#2a2a2a] text-[#777] hover:text-white"
+                                    }`}
+                                  >
+                                    Assistant
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      updateWebsiteViewMode(website._id, "website")
+                                    }
+                                    className={`px-2 py-1 rounded-md text-[10px] border ${
+                                      website.viewMode !== "assistant"
+                                        ? "border-red-600 bg-red-950/30 text-red-300"
+                                        : "border-[#2a2a2a] text-[#777] hover:text-white"
+                                    }`}
+                                  >
+                                    Website
+                                  </button>
+                                </>
+                              ) : (
+                                <span className="px-2 py-1 rounded-md text-[10px] border border-red-900/40 bg-red-950/20 text-red-300">
+                                  {website.viewMode === "assistant" ? "Assistant" : "Website"}
+                                </span>
+                              )}
                             </div>
                           )}
                         </div>
@@ -333,7 +370,7 @@ function WebsiteBookmarks() {
                         >
                           <ExternalLink className="w-4 h-4" />
                         </button>
-                        {!isTrulyPdf && (
+                        {canDeleteWebsite && (
                           <button
                             type="button"
                             onClick={() => handleDelete(website._id)}
