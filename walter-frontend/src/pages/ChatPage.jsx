@@ -8,12 +8,16 @@ import ContactList from "../components/ContactList";
 import ChatContainer from "../components/ChatContainer";
 import NoConversationPlaceholder from "../components/NoConversationPlaceholder";
 import SettingsPanel from "../components/SettingsPanel";
+import EmbeddedWebsiteWorkspace from "../components/EmbeddedWebsiteWorkspace";
 import { useLocation } from "react-router";
+import { useWebsiteStore } from "../store/useWebsiteStore";
 
 function ChatPage() {
   const { activeTab, selectedUser } = useChatStore();
   const location = useLocation();
   const isSettings = location.pathname.startsWith("/settings");
+  const { selectedWebsite } = useWebsiteStore();
+  const hasMainWorkspace = selectedWebsite || selectedUser;
 
   return (
     <div className="w-full h-screen flex flex-col md:flex-row bg-black overflow-hidden relative">
@@ -28,7 +32,7 @@ function ChatPage() {
       {/* LEFT SIDE (Chats List) */}
       <div
         className={`w-full md:w-[360px] lg:w-[420px] bg-[#0c0c0c] flex flex-col h-full border-r border-[#1a1a1a] z-30 pb-20 md:pb-0
-          ${selectedUser && !isSettings ? "hidden md:flex" : "flex"}`}
+          ${hasMainWorkspace && !isSettings ? "hidden md:flex" : "flex"}`}
       >
         {isSettings ? (
           <SettingsPanel />
@@ -45,12 +49,14 @@ function ChatPage() {
       {/* RIGHT SIDE (Chat Window) */}
       <div
         className={`flex-1 flex flex-col bg-gradient-to-br from-[#050505] via-[#0c0c0c] to-[#1a0003] h-full
-            ${selectedUser ? "fixed inset-0 z-50 md:static flex" : "hidden md:flex"}`}
+            ${hasMainWorkspace ? "fixed inset-0 z-50 md:static flex" : "hidden md:flex"}`}
       >
         {isSettings ? (
           <div className="flex-1 flex items-center justify-center text-[#7a7a7a]">
             <p className="text-sm">Select a settings option</p>
           </div>
+        ) : selectedWebsite ? (
+          <EmbeddedWebsiteWorkspace />
         ) : selectedUser ? (
           <ChatContainer />
         ) : (

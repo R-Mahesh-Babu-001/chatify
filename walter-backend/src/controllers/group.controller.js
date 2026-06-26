@@ -18,9 +18,16 @@ export const createGroup = async (req, res) => {
             imageUrl = uploadResponse.secure_url;
         }
 
-        // Ensure members are unique and exist (optional validation, skipping for now for speed)
-        // Add admin to members list automatically if not present
-        const uniqueMembers = [...new Set([...members, adminId])];
+        const requestedMemberIds = members.map(String);
+        const validMembers = await User.find({
+            _id: { $in: requestedMemberIds },
+        }).select("_id");
+
+        if (validMembers.length !== new Set(requestedMemberIds).size) {
+            return res.status(400).json({ message: "One or more selected members are invalid" });
+        }
+
+        const uniqueMembers = [...new Set([...requestedMemberIds, adminId.toString()])];
 
         const newGroup = new Group({
             name,
@@ -33,7 +40,10 @@ export const createGroup = async (req, res) => {
         await newGroup.save();
 
         // Populate members for immediate UI update
-        const populatedGroup = await Group.findById(newGroup._id).populate("members", "-password");
+        const populatedGroup = await Group.findById(newGroup._id).populate(
+            "members",
+            "-password -otpHash -otpExpiresAt"
+        );
 
         res.status(201).json(populatedGroup);
     } catch (error) {
@@ -46,8 +56,8 @@ export const getMyGroups = async (req, res) => {
     try {
         const myId = req.user._id;
         const groups = await Group.find({ members: myId })
-            .populate("members", "-password")
-            .populate("admin", "-password")
+            .populate("members", "-password -otpHash -otpExpiresAt")
+            .populate("admin", "-password -otpHash -otpExpiresAt")
             .sort({ updatedAt: -1 });
 
         res.status(200).json(groups);

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useChatStore } from "../store/useChatStore";
 import UsersLoadingSkeleton from "./UsersLoadingSkeleton";
 import NoChatsFound from "./NoChatsFound";
@@ -9,8 +9,6 @@ import CreateGroupModal from "./CreateGroupModal";
 function ChatsList() {
   const { getMyChatPartners, chats, groups, getMyGroups, isUsersLoading, isGroupsLoading, setSelectedUser, chatFilter, isGroupModalOpen, setIsGroupModalOpen } = useChatStore();
   const { onlineUsers } = useAuthStore();
-  const [search, setSearch] = useState("");
-
   useEffect(() => {
     getMyChatPartners();
     getMyGroups(); // Fetch groups as well
@@ -26,13 +24,6 @@ function ChatsList() {
   } else {
     displayItems = chats;
   }
-
-  // Search Filter
-  displayItems = displayItems.filter(item => {
-    const name = item.fullName || item.name;
-    return name?.toLowerCase().includes(search.toLowerCase());
-  });
-
 
   if (chatFilter === "groups" && displayItems.length === 0) {
     // Show "Create Group" prominent button if empty

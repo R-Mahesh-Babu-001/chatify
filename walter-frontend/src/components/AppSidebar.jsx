@@ -1,8 +1,9 @@
 import { useAuthStore } from "../store/useAuthStore";
 import { useChatStore } from "../store/useChatStore";
 import { MessageCircleIcon, UsersIcon, SettingsIcon, LogOutIcon, CameraIcon, Loader2 } from "lucide-react";
-import { useState } from "react";
+import { createElement, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
+import WebsiteBookmarks from "./WebsiteBookmarks";
 
 function AppSidebar() {
   const { authUser, logout, updateProfile } = useAuthStore();
@@ -60,10 +61,12 @@ function AppSidebar() {
         `}
         aria-label={label}
       >
-        <Icon className={`w-6 h-6 transition-colors duration-200 
-          ${isActive ? "text-[#e50914]" : "text-[#aebac1] group-hover:text-[#f3f3f3]"}
-          ${isDanger && "group-hover:text-red-400"}
-        `} />
+        {createElement(Icon, {
+          className: `w-6 h-6 transition-colors duration-200
+            ${isActive ? "text-[#e50914]" : "text-[#aebac1] group-hover:text-[#f3f3f3]"}
+            ${isDanger ? "group-hover:text-red-400" : ""}
+          `,
+        })}
       </button>
 
       {/* Perfect Tooltip (Desktop Only) */}
@@ -151,6 +154,7 @@ function AppSidebar() {
             onClick={() => navigate("/settings")}
           />
         </div>
+        <WebsiteBookmarks />
       </div>
 
       <div className="hidden md:flex flex-1" />

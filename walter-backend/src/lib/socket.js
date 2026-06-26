@@ -9,7 +9,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: [ENV.CLIENT_URL],
+    origin: ENV.CLIENT_ORIGINS,
     credentials: true,
   },
 });
@@ -54,8 +54,15 @@ io.on("connection", async (socket) => {
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
   socket.on("joinGroup", (groupId) => {
-    socket.join(groupId);
-    console.log(`User ${userId} joined group ${groupId}`);
+    Group.exists({ _id: groupId, members: userId })
+      .then((isMember) => {
+        if (!isMember) return;
+        socket.join(groupId);
+        console.log(`User ${userId} joined group ${groupId}`);
+      })
+      .catch((error) => {
+        console.error("Error joining group room:", error);
+      });
   });
 
   // with socket.on we listen for events from clients

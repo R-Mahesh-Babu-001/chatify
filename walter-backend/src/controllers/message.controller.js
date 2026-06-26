@@ -2,10 +2,28 @@ import cloudinary from "../lib/cloudinary.js";
 import { getReceiverSocketId, io } from "../lib/socket.js";
 import Message from "../models/Message.js";
 import User from "../models/User.js";
+import Group from "../models/Group.js";
+
+const MESSAGE_DELETE_AFTER_SEEN_MS = 10 * 60 * 1000;
+
+const scheduleSeenMessagesDeletion = (messageIds) => {
+  if (!messageIds.length) return;
+
+  setTimeout(async () => {
+    try {
+      await Message.deleteMany({
+        _id: { $in: messageIds },
+        expireAt: { $lte: new Date() },
+      });
+    } catch (error) {
+      console.error("Error deleting expired seen messages:", error.message);
+    }
+  }, MESSAGE_DELETE_AFTER_SEEN_MS);
+};
 
 export const getAllContacts = async (req, res) => {
   try {
-    const users = await User.find().select("-password");
+    const users = await User.find().select("-password -otpHash -otpExpiresAt");
 
     res.status(200).json(users);
   } catch (error) {
@@ -76,9 +94,11 @@ export const sendMessage = async (req, res) => {
     let newMessage;
 
     if (isGroup) {
-      // Handle Group Message
-      // Verify user is member (optional but good practice)
-      // For now, trust the isGroup flag and ID
+      const group = await Group.findOne({ _id: receiverId, members: senderId });
+      if (!group) {
+        return res.status(403).json({ message: "Not authorized to message this group." });
+      }
+
       newMessage = new Message({
         senderId,
         groupId: receiverId, // receiverId is groupId here
@@ -139,17 +159,34 @@ export const markConversationSeen = async (req, res) => {
     const { isGroup } = req.body;
 
     const now = new Date();
-    const expireAt = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+    const expireAt = new Date(now.getTime() + MESSAGE_DELETE_AFTER_SEEN_MS);
 
     const filter = isGroup
       ? { groupId: id, senderId: { $ne: myId }, seenAt: null }
       : { senderId: id, receiverId: myId, seenAt: null };
 
-    await Message.updateMany(filter, {
+    if (isGroup) {
+      const isMember = await Group.exists({ _id: id, members: myId });
+      if (!isMember) {
+        return res.status(403).json({ message: "Not authorized to access this group." });
+      }
+    }
+
+    const messagesToExpire = await Message.find(filter).select("_id");
+    const messageIds = messagesToExpire.map((message) => message._id);
+
+    await Message.updateMany({ _id: { $in: messageIds } }, {
       $set: { seenAt: now, expireAt },
     });
 
-    res.status(200).json({ message: "Marked as seen" });
+    scheduleSeenMessagesDeletion(messageIds);
+
+    res.status(200).json({
+      message: "Marked as seen",
+      deleteAfterMs: MESSAGE_DELETE_AFTER_SEEN_MS,
+      expireAt,
+      affectedCount: messageIds.length,
+    });
   } catch (error) {
     console.log("Error in markConversationSeen controller: ", error.message);
     res.status(500).json({ error: "Internal server error" });
@@ -196,6 +233,8 @@ export const getChatPartners = async (req, res) => {
 
     // find all the messages where the logged-in user is either sender or receiver
     const messages = await Message.find({
+      groupId: null,
+      receiverId: { $ne: null },
       $or: [{ senderId: loggedInUserId }, { receiverId: loggedInUserId }],
     });
 
@@ -209,7 +248,9 @@ export const getChatPartners = async (req, res) => {
       ),
     ];
 
-    const chatPartners = await User.find({ _id: { $in: chatPartnerIds } }).select("-password");
+    const chatPartners = await User.find({ _id: { $in: chatPartnerIds } }).select(
+      "-password -otpHash -otpExpiresAt"
+    );
 
     res.status(200).json(chatPartners);
   } catch (error) {

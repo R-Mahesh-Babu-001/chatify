@@ -2,6 +2,15 @@ import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 import { useAuthStore } from "./useAuthStore";
+import { useWebsiteStore } from "./useWebsiteStore";
+import {
+  deleteLocalMessage,
+  getLocalConversations,
+  getLocalMessages,
+  mergeConversations,
+  mergeMessages,
+  saveLocalMessages,
+} from "../lib/localChatStorage";
 
 export const useChatStore = create((set, get) => ({
   allContacts: [],
@@ -26,7 +35,10 @@ export const useChatStore = create((set, get) => ({
 
   setActiveTab: (tab) => set({ activeTab: tab }),
   setChatFilter: (filter) => set({ chatFilter: filter }),
-  setSelectedUser: (selectedUser) => set({ selectedUser }),
+  setSelectedUser: (selectedUser) => {
+    if (selectedUser) useWebsiteStore.getState().closeWebsite();
+    set({ selectedUser });
+  },
 
   getAllContacts: async () => {
     set({ isUsersLoading: true });
@@ -42,11 +54,21 @@ export const useChatStore = create((set, get) => ({
 
   getMyChatPartners: async () => {
     set({ isUsersLoading: true });
+    const ownerId = useAuthStore.getState().authUser?._id;
     try {
+      const localChats = await getLocalConversations({
+        ownerId,
+        conversationType: "direct",
+      });
       const res = await axiosInstance.get("/messages/chats");
-      set({ chats: res.data });
+      set({ chats: mergeConversations(res.data, localChats) });
     } catch (error) {
-      toast.error(error.response.data.message);
+      const localChats = await getLocalConversations({
+        ownerId,
+        conversationType: "direct",
+      });
+      set({ chats: localChats });
+      toast.error(error.response?.data?.message || "Failed to fetch chats");
     } finally {
       set({ isUsersLoading: false });
     }
@@ -54,10 +76,20 @@ export const useChatStore = create((set, get) => ({
 
   getMyGroups: async () => {
     set({ isGroupsLoading: true });
+    const ownerId = useAuthStore.getState().authUser?._id;
     try {
+      const localGroups = await getLocalConversations({
+        ownerId,
+        conversationType: "group",
+      });
       const res = await axiosInstance.get("/groups");
-      set({ groups: res.data });
+      set({ groups: mergeConversations(res.data, localGroups) });
     } catch (error) {
+      const localGroups = await getLocalConversations({
+        ownerId,
+        conversationType: "group",
+      });
+      set({ groups: localGroups });
       toast.error(error.response?.data?.message || "Failed to fetch groups");
     } finally {
       set({ isGroupsLoading: false });
@@ -89,15 +121,35 @@ export const useChatStore = create((set, get) => ({
       // Strategy: Try group endpoint if it looks like a group? 
       // Simplest: The UI knows if selectedUser is a group.
       const { selectedUser } = get();
+      const ownerId = useAuthStore.getState().authUser?._id;
       const isGroup = selectedUser?.admin !== undefined; // Quick check if it's a group object
+      const conversationType = isGroup ? "group" : "direct";
+      const localMessages = await getLocalMessages({
+        ownerId,
+        conversationId: id,
+        conversationType,
+      });
+
+      if (localMessages.length > 0) {
+        set({ messages: localMessages });
+      }
 
       const endpoint = isGroup ? `/groups/${id}` : `/messages/${id}`;
       const res = await axiosInstance.get(endpoint);
-      set({ messages: res.data });
+      const messages = mergeMessages(res.data, localMessages);
+      set({ messages });
+
+      await saveLocalMessages({
+        ownerId,
+        conversation: selectedUser,
+        messages,
+      });
 
       await axiosInstance.post(`/messages/seen/${id}`, { isGroup });
     } catch (error) {
-      toast.error(error.response?.data?.message || "Something went wrong");
+      if (get().messages.length === 0) {
+        toast.error(error.response?.data?.message || "Something went wrong");
+      }
     } finally {
       set({ isMessagesLoading: false });
     }
@@ -106,6 +158,7 @@ export const useChatStore = create((set, get) => ({
   sendMessage: async (messageData) => {
     const { selectedUser, messages } = get();
     const { authUser } = useAuthStore.getState();
+    const ownerId = authUser?._id;
     const isGroup = selectedUser?.admin !== undefined; // Check if group
 
     const tempId = `temp-${Date.now()}`;
@@ -132,6 +185,11 @@ export const useChatStore = create((set, get) => ({
       set((state) => ({
         messages: [...state.messages.filter((m) => m._id !== tempId), res.data],
       }));
+      saveLocalMessages({
+        ownerId,
+        conversation: selectedUser,
+        messages: [res.data],
+      }).catch(() => {});
     } catch (error) {
       set({ messages: messages });
       toast.error(error.response?.data?.message || "Something went wrong");
@@ -140,10 +198,12 @@ export const useChatStore = create((set, get) => ({
 
   deleteMessage: async (messageId, scope) => {
     const { messages } = get();
+    const ownerId = useAuthStore.getState().authUser?._id;
     const previous = messages;
     set({ messages: messages.filter((m) => m._id !== messageId) });
     try {
       await axiosInstance.post(`/messages/delete/${messageId}`, { scope });
+      await deleteLocalMessage({ ownerId, messageId });
     } catch (error) {
       set({ messages: previous });
       toast.error(error.response?.data?.message || "Failed to delete message");
@@ -176,6 +236,11 @@ export const useChatStore = create((set, get) => ({
 
       const currentMessages = get().messages;
       set({ messages: [...currentMessages, newMessage] });
+      saveLocalMessages({
+        ownerId: useAuthStore.getState().authUser?._id,
+        conversation: selectedUser,
+        messages: [newMessage],
+      }).catch(() => {});
 
       if (isGroupMessage) {
         axiosInstance.post(`/messages/seen/${selectedUser._id}`, { isGroup: true }).catch(() => { });
@@ -192,7 +257,7 @@ export const useChatStore = create((set, get) => ({
           try {
             const notification = new Notification(title, { body });
             notification.onclick = () => window.focus();
-          } catch (_) {
+          } catch {
             // ignore notification errors
           }
         };

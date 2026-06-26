@@ -1,0 +1,179 @@
+
+> frontend@0.0.0 dev
+> vite --host 127.0.0.1 --port 5173
+
+
+  [32m[1mVITE[22m v7.3.0[39m  [2mready in [0m[1m757[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://127.0.0.1:[1m5173[22m/[39m
+[2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
+Browserslist: browsers data (caniuse-lite) is 6 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+
+🌼   [35mdaisyUI[39m [2m4.12.24[22m
+├─ [32m✔︎[39m 2 themes added[2m		https://daisyui.com/docs/themes[22m
+╰─ [32m❤︎[39m [0mSupport daisyUI project:[0m	[2mhttps://opencollective.com/daisyui[22m
+
+[2m7:52:46 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/TrulyPdfAssistantWorkspace.jsx[22m
+[2m7:52:46 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/TrulyPdfAssistantWorkspace.jsx[22m
+[2m7:56:59 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/TrulyPdfAssistantWorkspace.jsx[22m
+[2m8:01:44 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/TrulyPdfAssistantWorkspace.jsx[22m
+[2m8:01:44 PM[22m [31m[1m[vite][22m[39m [31mInternal server error: C:\Users\gHOST\Downloads\chatify\walter-frontend\src\components\TrulyPdfAssistantWorkspace.jsx: Unexpected token, expected "," (629:26)
+
+[0m [90m 627 |[31m             [33m<[31m[33m/[31m[33mdiv[31m[33m>[31m
+ [90m 628 |[31m           ) [33m:[31m (
+[31m[1m>[22m[31m[90m 629 |[31m             {recentResults[33m.[31mmap((result) [33m=>[31m (
+ [90m     |[31m                           [31m[1m^[22m[31m
+ [90m 630 |[31m               [33m<[31m[33marticle[31m
+ [90m 631 |[31m                 key[33m=[31m{result[33m.[31mid}
+ [90m 632 |[31m                 className[33m=[31m[32m"rounded-xl border border-[#20252c] bg-[#0d1015]/90 p-5"[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mC:/Users/gHOST/Downloads/chatify/walter-frontend/src/components/TrulyPdfAssistantWorkspace.jsx[39m:629:26
+[33m  627 |              </div>
+  628 |            ) : (
+  629 |              {recentResults.map((result) => (
+      |                            ^
+  630 |                <article
+  631 |                  key={result.id}[39m
+      at constructor (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:367:19)
+      at JSXParserMixin.raise (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:6624:19)
+      at JSXParserMixin.unexpected (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:6644:16)
+      at JSXParserMixin.expect (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:6924:12)
+      at JSXParserMixin.parseObjectLike (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:11894:14)
+      at JSXParserMixin.parseExprAtom (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:11403:23)
+      at JSXParserMixin.parseExprAtom (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:4793:20)
+      at JSXParserMixin.parseExprSubscripts (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:11145:23)
+      at JSXParserMixin.parseUpdate (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:11130:21)
+      at JSXParserMixin.parseMaybeUnary (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:11110:23)
+      at JSXParserMixin.parseMaybeUnaryOrPrivate (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10963:61)
+      at JSXParserMixin.parseExprOps (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10968:23)
+      at JSXParserMixin.parseMaybeConditional (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10945:23)
+      at JSXParserMixin.parseMaybeAssign (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10895:21)
+      at C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10864:39
+      at JSXParserMixin.allowInAnd (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:12500:12)
+      at JSXParserMixin.parseMaybeAssignAllowIn (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10864:17)
+      at JSXParserMixin.parseMaybeAssignAllowInOrVoidPattern (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:12567:17)
+      at JSXParserMixin.parseParenAndDistinguishExpression (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:11747:28)
+      at JSXParserMixin.parseExprAtom (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:11395:23)
+      at JSXParserMixin.parseExprAtom (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:4793:20)
+      at JSXParserMixin.parseExprSubscripts (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:11145:23)
+      at JSXParserMixin.parseUpdate (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:11130:21)
+      at JSXParserMixin.parseMaybeUnary (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:11110:23)
+      at JSXParserMixin.parseMaybeUnaryOrPrivate (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10963:61)
+      at JSXParserMixin.parseExprOps (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10968:23)
+      at JSXParserMixin.parseMaybeConditional (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10945:23)
+      at JSXParserMixin.parseMaybeAssign (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10895:21)
+      at JSXParserMixin.parseConditional (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10957:29)
+      at JSXParserMixin.parseMaybeConditional (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10949:17)
+      at JSXParserMixin.parseMaybeAssign (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10895:21)
+      at JSXParserMixin.parseConditional (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10957:29)
+      at JSXParserMixin.parseMaybeConditional (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10949:17)
+      at JSXParserMixin.parseMaybeAssign (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10895:21)
+      at JSXParserMixin.parseExpressionBase (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10848:23)
+      at C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10844:39
+      at JSXParserMixin.allowInAnd (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:12500:12)
+      at JSXParserMixin.parseExpression (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10844:17)
+      at JSXParserMixin.jsxParseExpressionContainer (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:4661:31)
+      at JSXParserMixin.jsxParseElementAt (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:4740:36)
+      at JSXParserMixin.jsxParseElementAt (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:4727:32)
+      at JSXParserMixin.jsxParseElementAt (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:4727:32)
+      at JSXParserMixin.jsxParseElement (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:4778:17)
+      at JSXParserMixin.parseExprAtom (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:4788:19)
+      at JSXParserMixin.parseExprSubscripts (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:11145:23)
+      at JSXParserMixin.parseUpdate (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:11130:21)
+      at JSXParserMixin.parseMaybeUnary (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:11110:23)
+      at JSXParserMixin.parseMaybeUnaryOrPrivate (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10963:61)
+      at JSXParserMixin.parseExprOps (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10968:23)
+      at JSXParserMixin.parseMaybeConditional (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10945:23)
+[2m8:02:14 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/TrulyPdfAssistantWorkspace.jsx[22m
+[2m8:02:14 PM[22m [31m[1m[vite][22m[39m [31mInternal server error: C:\Users\gHOST\Downloads\chatify\walter-frontend\src\components\TrulyPdfAssistantWorkspace.jsx: Unexpected token, expected "," (666:14)
+
+[0m [90m 664 |[31m                 [33m<[31m[33m/[31m[33mdiv[31m[33m>[31m
+ [90m 665 |[31m               [33m<[31m[33m/[31m[33marticle[31m[33m>[31m
+[31m[1m>[22m[31m[90m 666 |[31m             ))}
+ [90m     |[31m               [31m[1m^[22m[31m
+ [90m 667 |[31m           )}
+ [90m 668 |[31m         [33m<[31m[33m/[31m[33msection[31m[33m>[31m
+ [90m 669 |[31m       [33m<[31m[33m/[31m[33mdiv[31m[33m>[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mC:/Users/gHOST/Downloads/chatify/walter-frontend/src/components/TrulyPdfAssistantWorkspace.jsx[39m:666:14
+[33m  664 |                  </div>
+  665 |                </article>
+  666 |              ))}
+      |                ^
+  667 |            )}
+  668 |          </section>[39m
+      at constructor (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:367:19)
+      at JSXParserMixin.raise (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:6624:19)
+      at JSXParserMixin.unexpected (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:6644:16)
+      at JSXParserMixin.expect (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:6924:12)
+      at JSXParserMixin.parseParenAndDistinguishExpression (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:11733:14)
+      at JSXParserMixin.parseExprAtom (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:11395:23)
+      at JSXParserMixin.parseExprAtom (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:4793:20)
+      at JSXParserMixin.parseExprSubscripts (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:11145:23)
+      at JSXParserMixin.parseUpdate (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:11130:21)
+      at JSXParserMixin.parseMaybeUnary (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:11110:23)
+      at JSXParserMixin.parseMaybeUnaryOrPrivate (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10963:61)
+      at JSXParserMixin.parseExprOps (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10968:23)
+      at JSXParserMixin.parseMaybeConditional (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10945:23)
+      at JSXParserMixin.parseMaybeAssign (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10895:21)
+      at JSXParserMixin.parseConditional (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10957:29)
+      at JSXParserMixin.parseMaybeConditional (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10949:17)
+      at JSXParserMixin.parseMaybeAssign (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10895:21)
+      at JSXParserMixin.parseConditional (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10957:29)
+      at JSXParserMixin.parseMaybeConditional (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10949:17)
+      at JSXParserMixin.parseMaybeAssign (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10895:21)
+      at JSXParserMixin.parseExpressionBase (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10848:23)
+      at C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10844:39
+      at JSXParserMixin.allowInAnd (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:12500:12)
+      at JSXParserMixin.parseExpression (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10844:17)
+      at JSXParserMixin.jsxParseExpressionContainer (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:4661:31)
+      at JSXParserMixin.jsxParseElementAt (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:4740:36)
+      at JSXParserMixin.jsxParseElementAt (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:4727:32)
+      at JSXParserMixin.jsxParseElementAt (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:4727:32)
+      at JSXParserMixin.jsxParseElement (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:4778:17)
+      at JSXParserMixin.parseExprAtom (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:4788:19)
+      at JSXParserMixin.parseExprSubscripts (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:11145:23)
+      at JSXParserMixin.parseUpdate (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:11130:21)
+      at JSXParserMixin.parseMaybeUnary (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:11110:23)
+      at JSXParserMixin.parseMaybeUnaryOrPrivate (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10963:61)
+      at JSXParserMixin.parseExprOps (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10968:23)
+      at JSXParserMixin.parseMaybeConditional (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10945:23)
+      at JSXParserMixin.parseMaybeAssign (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10895:21)
+      at C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10864:39
+      at JSXParserMixin.allowInAnd (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:12500:12)
+      at JSXParserMixin.parseMaybeAssignAllowIn (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10864:17)
+      at JSXParserMixin.parseMaybeAssignAllowInOrVoidPattern (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:12567:17)
+      at JSXParserMixin.parseParenAndDistinguishExpression (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:11747:28)
+      at JSXParserMixin.parseExprAtom (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:11395:23)
+      at JSXParserMixin.parseExprAtom (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:4793:20)
+      at JSXParserMixin.parseExprSubscripts (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:11145:23)
+      at JSXParserMixin.parseUpdate (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:11130:21)
+      at JSXParserMixin.parseMaybeUnary (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:11110:23)
+      at JSXParserMixin.parseMaybeUnaryOrPrivate (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10963:61)
+      at JSXParserMixin.parseExprOps (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10968:23)
+      at JSXParserMixin.parseMaybeConditional (C:\Users\gHOST\Downloads\chatify\walter-frontend\node_modules\@babel\parser\lib\index.js:10945:23)
+[2m8:02:24 PM[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m Pre-transform error: C:\Users\gHOST\Downloads\chatify\walter-frontend\src\components\TrulyPdfAssistantWorkspace.jsx: Unexpected token, expected "," (666:14)
+
+[0m [90m 664 |[39m                 [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m
+ [90m 665 |[39m               [33m<[39m[33m/[39m[33marticle[39m[33m>[39m
+[31m[1m>[22m[39m[90m 666 |[39m             ))}
+ [90m     |[39m               [31m[1m^[22m[39m
+ [90m 667 |[39m           )}
+ [90m 668 |[39m         [33m<[39m[33m/[39m[33msection[39m[33m>[39m
+ [90m 669 |[39m       [33m<[39m[33m/[39m[33mdiv[39m[33m>[39m[0m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mC:/Users/gHOST/Downloads/chatify/walter-frontend/src/components/TrulyPdfAssistantWorkspace.jsx[39m:666:14
+[33m  664 |                  </div>
+  665 |                </article>
+  666 |              ))}
+      |                ^
+  667 |            )}
+  668 |          </section>[39m
+[2m8:02:34 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/TrulyPdfAssistantWorkspace.jsx[22m
+[2m8:03:14 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/TrulyPdfAssistantWorkspace.jsx[22m
+[2m9:24:13 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/ChatPage.jsx, /src/components/ProfileHeader.jsx, /src/components/ChatsList.jsx, /src/components/ContactList.jsx, /src/components/ChatContainer.jsx, /src/components/AppSidebar.jsx, /src/components/ActiveTabSwitch.jsx, /src/components/CreateGroupModal.jsx, /src/components/NoChatsFound.jsx, /src/components/ChatHeader.jsx, /src/components/MessageInput.jsx, /src/components/WebsiteBookmarks.jsx[22m
+[2m9:24:44 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/ChatPage.jsx, /src/components/ProfileHeader.jsx, /src/components/ChatsList.jsx, /src/components/ContactList.jsx, /src/components/ChatContainer.jsx, /src/components/AppSidebar.jsx, /src/components/ActiveTabSwitch.jsx, /src/components/CreateGroupModal.jsx, /src/components/NoChatsFound.jsx, /src/components/ChatHeader.jsx, /src/components/MessageInput.jsx, /src/components/WebsiteBookmarks.jsx, /src/index.css[22m
+[2m9:37:50 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/WebsiteBookmarks.jsx[22m
+[2m9:38:07 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/TrulyPdfAssistantWorkspace.jsx[22m

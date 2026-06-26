@@ -103,7 +103,7 @@ function MessageInput() {
 
       mediaRecorder.start();
       setIsRecording(true);
-    } catch (error) {
+    } catch {
       toast.error("Microphone access denied");
     }
   };

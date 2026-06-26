@@ -106,7 +106,12 @@ export const login = async (req, res) => {
 };
 
 export const logout = (_, res) => {
-  res.cookie("jwt", "", { maxAge: 0 });
+  res.cookie("jwt", "", {
+    maxAge: 0,
+    httpOnly: true,
+    sameSite: ENV.NODE_ENV === "production" ? "none" : "lax",
+    secure: ENV.NODE_ENV === "production",
+  });
   res.status(200).json({ message: "Logged out successfully" });
 };
 
@@ -143,7 +148,7 @@ export const updateProfile = async (req, res) => {
       userId,
       updateFields,
       { new: true }
-    );
+    ).select("-password -otpHash -otpExpiresAt");
 
     res.status(200).json(updatedUser);
   } catch (error) {

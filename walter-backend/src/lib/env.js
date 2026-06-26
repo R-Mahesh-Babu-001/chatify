@@ -1,4 +1,16 @@
-import "dotenv/config";
+import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: path.resolve(currentDirectory, "../../.env") });
+
+const clientOrigins = [
+  process.env.CLIENT_URL,
+  ...(process.env.NODE_ENV === "development"
+    ? ["http://localhost:5173", "http://127.0.0.1:5173"]
+    : []),
+].filter(Boolean);
 
 export const ENV = {
   PORT: process.env.PORT,
@@ -6,6 +18,7 @@ export const ENV = {
   JWT_SECRET: process.env.JWT_SECRET,
   NODE_ENV: process.env.NODE_ENV,
   CLIENT_URL: process.env.CLIENT_URL,
+  CLIENT_ORIGINS: [...new Set(clientOrigins)],
   RESEND_API_KEY: process.env.RESEND_API_KEY,
   EMAIL_FROM: process.env.EMAIL_FROM,
   EMAIL_FROM_NAME: process.env.EMAIL_FROM_NAME,
