@@ -414,8 +414,11 @@ function TrulyPdfAssistantWorkspace() {
     if (!tool) return;
     const operationId = crypto.randomUUID();
     const chatifyOrigin = window.location.origin;
-    const toolUrl = new URL(baseUrl);
-    toolUrl.searchParams.set("chatifyTool", tool.path);
+    const toolUrl =
+      tool.id === "merge-pdf" ? new URL(`${baseUrl}${tool.path}`) : new URL(baseUrl);
+    if (tool.id !== "merge-pdf") {
+      toolUrl.searchParams.set("chatifyTool", tool.path);
+    }
     toolUrl.searchParams.set("chatifyOrigin", chatifyOrigin);
     toolUrl.searchParams.set("chatifyOperationId", operationId);
 
