@@ -1,4 +1,4 @@
-import { Search, Monitor, KeyRound, Lock, MessageSquare, Video, Bell, Keyboard, HelpCircle, Camera } from "lucide-react";
+import { Search, Monitor, KeyRound, Lock, MessageSquare, Video, Bell, Keyboard, HelpCircle, Camera, LogOutIcon } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 import { useEffect, useRef, useState } from "react";
 
@@ -136,20 +136,20 @@ function SettingsPanel() {
 
         <div className="space-y-2 pb-2 border-b border-[#1a1a1a]">
           <label className="text-sm text-[#9b9b9b]">Status</label>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
             <input
               type="text"
               value={statusText}
               onChange={(e) => setStatusText(e.target.value)}
               maxLength={80}
               placeholder="Set your status"
-              className="flex-1 h-10 bg-[#131313] border border-[#1a1a1a] rounded-lg px-3 text-sm text-white placeholder-[#7a7a7a] focus:outline-none focus:ring-2 focus:ring-red-600"
+              className="w-full sm:flex-1 h-11 bg-[#131313] border border-[#1a1a1a] rounded-lg px-3 text-sm text-white placeholder-[#7a7a7a] focus:outline-none focus:ring-2 focus:ring-red-600"
             />
             <button
               type="button"
               onClick={handleStatusSave}
               disabled={isSaving}
-              className="h-10 px-4 rounded-lg bg-[#e50914] text-white text-sm font-medium hover:bg-[#ff1f2b] disabled:opacity-60"
+              className="h-11 px-5 rounded-lg bg-[#e50914] text-white text-sm font-medium hover:bg-[#ff1f2b] disabled:opacity-60"
             >
               Save
             </button>
@@ -157,7 +157,7 @@ function SettingsPanel() {
             <button
               type="button"
               onClick={logout}
-              className="mt-6 w-full h-12 rounded-xl border border-red-900/60 bg-red-950/20 text-red-300 hover:bg-red-600 hover:text-white flex items-center justify-center gap-2 font-semibold transition-colors"
+              className="h-11 px-5 rounded-lg border border-red-900/60 bg-red-950/20 text-red-300 hover:bg-red-600 hover:text-white flex items-center justify-center gap-2 font-semibold transition-colors"
             >
               <LogOutIcon className="w-5 h-5" />
               Logout
@@ -171,4 +171,3 @@ function SettingsPanel() {
 }
 
 export default SettingsPanel;
-import { LogOutIcon } from "lucide-react";
