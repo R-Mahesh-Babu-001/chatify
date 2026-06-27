@@ -52,8 +52,8 @@ const WebsiteIcon = ({ website, className = "w-9 h-9 rounded-lg" }) => {
 const VerifiedBadge = () => (
   <span
     className="inline-flex items-center justify-center"
-    title="Verified Truly-PDF"
-    aria-label="Verified Truly-PDF"
+    title="Verified admin website"
+    aria-label="Verified admin website"
   >
     <BadgeCheck className="w-4 h-4 fill-[#e50914] text-white" strokeWidth={2.6} />
   </span>
@@ -295,6 +295,7 @@ function WebsiteBookmarks() {
                       const displayName = getWebsiteDisplayName(website);
                       const isOwner = getWebsiteOwnerId(website) === authUser?._id;
                       const isSharedByAdmin = isAdminOwnedWebsite(website) && !isAdmin;
+                      const isVerifiedWebsite = isAdminOwnedWebsite(website);
                       const canManageWebsite = isAdmin || isOwner;
                       const canDeleteWebsite = isAdmin || (isOwner && !isTrulyPdf);
 
@@ -307,7 +308,7 @@ function WebsiteBookmarks() {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-1.5 min-w-0">
                             <p className="text-sm text-white truncate">{displayName}</p>
-                            {isTrulyPdf && <VerifiedBadge />}
+                            {isVerifiedWebsite && <VerifiedBadge />}
                           </div>
                           <p className="text-xs text-[#777] truncate">{website.url}</p>
                           {isAdmin && website.userId && (
