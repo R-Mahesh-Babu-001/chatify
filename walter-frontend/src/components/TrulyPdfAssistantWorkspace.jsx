@@ -46,7 +46,7 @@ const PDF_TOOLS = [
     name: "Merge PDF",
     description: "Combine PDFs in the order you want with the easiest PDF merger available.",
     category: "organize",
-    path: "https://truly-pdf.onrender.com/tool/merge-pdf",
+    path: "/tool/merge-pdf",
     icon: Combine,
     keywords: ["combine", "join"],
   },
