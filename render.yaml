@@ -46,3 +46,5 @@ services:
     envVars:
       - key: VITE_API_URL
         sync: false
+      - key: VITE_TRULY_PDF_URL
+        value: https://truly-pdf.onrender.com
