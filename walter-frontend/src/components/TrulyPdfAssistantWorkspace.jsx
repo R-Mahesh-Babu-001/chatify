@@ -14,6 +14,7 @@ import {
   Languages,
   Lock,
   PenTool,
+  RefreshCw,
   RotateCw,
   Scissors,
   ShieldCheck,
@@ -316,6 +317,7 @@ function TrulyPdfAssistantWorkspace() {
   const [selectedTool, setSelectedTool] = useState(null);
   const [activeOperation, setActiveOperation] = useState(null);
   const [embeddedTool, setEmbeddedTool] = useState(null);
+  const [embeddedFrameKey, setEmbeddedFrameKey] = useState(0);
   const [recentResults, setRecentResults] = useState([]);
   const [isLoadingResults, setIsLoadingResults] = useState(true);
 
@@ -327,7 +329,11 @@ function TrulyPdfAssistantWorkspace() {
     [activeCategory]
   );
 
-  const loadRecentResults = useCallback(async ({ showError = false } = {}) => {
+  const loadRecentResults = useCallback(async ({ showError = false, showLoading = false } = {}) => {
+    if (showLoading) {
+      setIsLoadingResults(true);
+    }
+
     try {
       const results = await getPdfResults();
       setRecentResults(results);
@@ -440,6 +446,7 @@ function TrulyPdfAssistantWorkspace() {
       startedAt: Date.now(),
       status: "processing",
     });
+    setEmbeddedFrameKey(0);
     setEmbeddedTool({ ...tool, url: toolUrl.toString() });
     toast.success(`${tool.name} opened inside Chatify`);
   };
@@ -471,7 +478,10 @@ function TrulyPdfAssistantWorkspace() {
         <header className="h-16 px-4 md:px-6 border-b border-[#191d23] flex items-center gap-3 shrink-0">
           <button
             type="button"
-            onClick={() => setEmbeddedTool(null)}
+            onClick={() => {
+              setEmbeddedTool(null);
+              loadRecentResults({ showError: true });
+            }}
             className="h-10 px-4 rounded-xl border border-[#252a31] bg-[#101318] text-[#d7dbe1] hover:text-white hover:bg-[#171b22] text-sm font-semibold"
           >
             ← Back to assistant
@@ -484,6 +494,15 @@ function TrulyPdfAssistantWorkspace() {
               Complete the operation here. Downloaded results will appear in file history.
             </p>
           </div>
+          <button
+            type="button"
+            onClick={() => setEmbeddedFrameKey((current) => current + 1)}
+            className="w-8 h-8 rounded-lg text-[#828995] hover:text-white hover:bg-[#171a20] flex items-center justify-center"
+            aria-label={`Refresh ${embeddedTool.name}`}
+            title="Refresh tool"
+          >
+            <RefreshCw className="w-4 h-4" />
+          </button>
           <a
             href={embeddedTool.url}
             target="_blank"
@@ -504,6 +523,7 @@ function TrulyPdfAssistantWorkspace() {
         </header>
 
         <iframe
+          key={embeddedFrameKey}
           src={embeddedTool.url}
           title={embeddedTool.name}
           className="flex-1 min-h-0 w-full border-0 bg-white"
@@ -640,7 +660,7 @@ function TrulyPdfAssistantWorkspace() {
             </p>
             <button
               type="button"
-              onClick={() => loadRecentResults()}
+              onClick={() => loadRecentResults({ showError: true, showLoading: true })}
               className="text-xs text-[#8b929c] hover:text-white"
             >
               Refresh
