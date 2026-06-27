@@ -40,6 +40,12 @@ const CATEGORY_TABS = [
   { id: "esign", label: "eSign", icon: PenTool },
 ];
 
+const isBlobLike = (value) =>
+  value &&
+  typeof value === "object" &&
+  typeof value.arrayBuffer === "function" &&
+  typeof value.size === "number";
+
 const PDF_TOOLS = [
   {
     id: "merge-pdf",
@@ -370,9 +376,16 @@ function TrulyPdfAssistantWorkspace() {
         return;
       }
 
-      if (event.data?.type !== "chatify:pdf-result" || !(event.data?.blob instanceof Blob)) {
+      if (event.data?.type !== "chatify:pdf-result" || !isBlobLike(event.data?.blob)) {
         return;
       }
+
+      const resultBlob =
+        event.data.blob instanceof Blob
+          ? event.data.blob
+          : new Blob([await event.data.blob.arrayBuffer()], {
+              type: event.data.fileType || event.data.blob.type || "application/octet-stream",
+            });
 
       const result = {
         ...activeOperation,
@@ -381,9 +394,9 @@ function TrulyPdfAssistantWorkspace() {
         completedAt: Date.now(),
         createdAt: Date.now(),
         fileName: event.data.filename || "truly-pdf-result",
-        fileSize: event.data.fileSize || event.data.blob.size,
-        fileType: event.data.fileType || event.data.blob.type || "application/octet-stream",
-        blob: event.data.blob,
+        fileSize: event.data.fileSize || resultBlob.size,
+        fileType: event.data.fileType || resultBlob.type || "application/octet-stream",
+        blob: resultBlob,
       };
 
       try {
