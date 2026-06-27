@@ -1,6 +1,5 @@
 import express from "express";
 import cookieParser from "cookie-parser";
-import path from "path";
 import cors from "cors";
 
 import authRoutes from "./routes/auth.route.js";
@@ -11,8 +10,6 @@ import adminRoutes from "./routes/admin.route.js";
 import { connectDB } from "./lib/db.js";
 import { ENV } from "./lib/env.js";
 import { app, server } from "./lib/socket.js";
-
-const __dirname = path.resolve();
 
 const PORT = ENV.PORT || 3000;
 
@@ -30,14 +27,9 @@ app.use("/api/groups", groupRoutes);
 app.use("/api/websites", websiteRoutes);
 app.use("/api/admin", adminRoutes);
 
-// make ready for deployment
-if (ENV.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
-
-  app.get("*", (_, res) => {
-    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
-  });
-}
+app.get("/", (_, res) => {
+  res.status(200).json({ status: "ok", service: "chatify-backend" });
+});
 
 server.listen(PORT, () => {
   console.log("Server running on port: " + PORT);
