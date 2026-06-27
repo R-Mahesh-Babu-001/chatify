@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ArrowLeftRight,
   BadgeCheck,
@@ -309,9 +309,9 @@ function TrulyPdfAssistantWorkspace() {
   const [activeCategory, setActiveCategory] = useState("all");
   const [selectedTool, setSelectedTool] = useState(null);
   const [activeOperation, setActiveOperation] = useState(null);
+  const [embeddedTool, setEmbeddedTool] = useState(null);
   const [recentResults, setRecentResults] = useState([]);
   const [isLoadingResults, setIsLoadingResults] = useState(true);
-  const toolWindowRef = useRef(null);
 
   const visibleTools = useMemo(
     () =>
@@ -427,8 +427,8 @@ function TrulyPdfAssistantWorkspace() {
       startedAt: Date.now(),
       status: "processing",
     });
-    toolWindowRef.current = window.open(toolUrl.toString(), "truly-pdf-tool");
-    toast.success(`${tool.name} opened in Truly PDF`);
+    setEmbeddedTool({ ...tool, url: toolUrl.toString() });
+    toast.success(`${tool.name} opened inside Chatify`);
   };
 
   const downloadResult = (result) => {
@@ -451,6 +451,55 @@ function TrulyPdfAssistantWorkspace() {
       toast.error("Could not remove saved result");
     }
   };
+
+  if (embeddedTool) {
+    return (
+      <div className="h-full min-h-0 flex flex-col bg-[#07090c] text-white">
+        <header className="h-16 px-4 md:px-6 border-b border-[#191d23] flex items-center gap-3 shrink-0">
+          <button
+            type="button"
+            onClick={() => setEmbeddedTool(null)}
+            className="h-10 px-4 rounded-xl border border-[#252a31] bg-[#101318] text-[#d7dbe1] hover:text-white hover:bg-[#171b22] text-sm font-semibold"
+          >
+            ← Back to assistant
+          </button>
+          <div className="flex-1 min-w-0">
+            <h1 className="text-base font-semibold leading-tight truncate">
+              {embeddedTool.name}
+            </h1>
+            <p className="text-xs text-[#747b86] leading-tight mt-1 truncate">
+              Complete the operation here. Downloaded results will appear in file history.
+            </p>
+          </div>
+          <a
+            href={embeddedTool.url}
+            target="_blank"
+            rel="noreferrer"
+            className="w-8 h-8 rounded-lg text-[#828995] hover:text-white hover:bg-[#171a20] flex items-center justify-center"
+            aria-label={`Open ${embeddedTool.name} in a new tab`}
+          >
+            <ExternalLink className="w-4 h-4" />
+          </a>
+          <button
+            type="button"
+            onClick={closeWebsite}
+            className="w-8 h-8 rounded-lg text-[#828995] hover:text-white hover:bg-[#171a20] flex items-center justify-center"
+            aria-label="Close Truly PDF Assistant"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </header>
+
+        <iframe
+          src={embeddedTool.url}
+          title={embeddedTool.name}
+          className="flex-1 min-h-0 w-full border-0 bg-white"
+          allow="clipboard-read; clipboard-write; camera; microphone; fullscreen"
+          referrerPolicy="strict-origin-when-cross-origin"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="h-full min-h-0 flex flex-col bg-[radial-gradient(circle_at_50%_10%,rgba(28,32,40,0.35),transparent_40%),#07090c] text-white">
