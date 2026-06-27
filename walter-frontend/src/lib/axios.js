@@ -13,4 +13,5 @@ export const API_ORIGIN =
 export const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true,
+  timeout: 20000,
 });

@@ -19,8 +19,12 @@ export const useAuthStore = create((set, get) => ({
     } catch (error) {
       console.log("Error in authCheck:", error);
       set({ authUser: null });
-      const { useWebsiteStore } = await import("./useWebsiteStore");
-      useWebsiteStore.getState().resetWebsites();
+      try {
+        const { useWebsiteStore } = await import("./useWebsiteStore");
+        useWebsiteStore.getState().resetWebsites?.();
+      } catch (storeError) {
+        console.log("Website store reset skipped:", storeError);
+      }
     } finally {
       set({ isCheckingAuth: false });
     }
@@ -65,8 +69,12 @@ export const useAuthStore = create((set, get) => ({
     try {
       await axiosInstance.post("/auth/logout");
       set({ authUser: null });
-      const { useWebsiteStore } = await import("./useWebsiteStore");
-      useWebsiteStore.getState().resetWebsites();
+      try {
+        const { useWebsiteStore } = await import("./useWebsiteStore");
+        useWebsiteStore.getState().resetWebsites?.();
+      } catch (storeError) {
+        console.log("Website store reset skipped:", storeError);
+      }
       toast.success("Logged out successfully");
       get().disconnectSocket();
     } catch (error) {
