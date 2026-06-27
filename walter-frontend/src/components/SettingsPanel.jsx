@@ -46,7 +46,7 @@ const SETTINGS_ITEMS = [
 ];
 
 function SettingsPanel() {
-  const { authUser, updateProfile } = useAuthStore();
+  const { authUser, updateProfile, logout } = useAuthStore();
   const [statusText, setStatusText] = useState(authUser?.status || "");
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -153,6 +153,15 @@ function SettingsPanel() {
             >
               Save
             </button>
+
+            <button
+              type="button"
+              onClick={logout}
+              className="mt-6 w-full h-12 rounded-xl border border-red-900/60 bg-red-950/20 text-red-300 hover:bg-red-600 hover:text-white flex items-center justify-center gap-2 font-semibold transition-colors"
+            >
+              <LogOutIcon className="w-5 h-5" />
+              Logout
+            </button>
           </div>
         </div>
 
@@ -162,3 +171,4 @@ function SettingsPanel() {
 }
 
 export default SettingsPanel;
+import { LogOutIcon } from "lucide-react";
